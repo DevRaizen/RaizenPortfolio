@@ -1,35 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment} from '../environments/environment';
-import { GoogleGenAI } from '@google/genai';
-
+import { HttpClient } from '@angular/common/http';
+import { Observable, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeminiService {
 
-   private ai: GoogleGenAI;
+  // Vercel backend endpoint
+private apiUrl = 'https://api-3qmrdz9y0-devraizens-projects.vercel.app/api/data';
 
-  constructor() {
-    this.ai = new GoogleGenAI({ apiKey: environment.geminiApiKey });
+  constructor(private http: HttpClient) {}
+
+  async sendMessage(prompt: string, myContext: string): Promise<any> {
+    try {
+      // Send the prompt + context to your backend
+      const payload = { prompt, myContext };
+
+      // Use firstValueFrom to convert Observable to Promise
+      const response: any = await firstValueFrom(this.http.post(this.apiUrl, payload));
+
+      // Backend should return the AI response
+      return response.result || 'No response from backend';
+    } catch (err) {
+      console.error('Backend API Error:', err);
+      return 'Error connecting to backend';
+    }
   }
-
-async sendMessage(prompt: string, myContext: string): Promise<any> {
-  try {
-    const response = await this.ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt + myContext
-    });
-
-    // Safely get the first candidate content or fallback
-    return response.candidates?.[0]?.content || 'No response from Gemini';
-  } catch (err) {
-    console.error('Gemini API Error:', err);
-    return 'Error connecting to Gemini';
-  }
-}
-
-
 }

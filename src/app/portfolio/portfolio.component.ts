@@ -79,16 +79,16 @@ He can respond in Tagalog, English, or a mix of both, depending on the conversat
 Always explain technical concepts clearly in a conversational tone, as Shawn would when chatting with a friend or colleague.
 `;
 
-  const resText = await this.geminiService.sendMessage(userMessage, myContext);
-  console.log(resText);
+ const resText = await this.geminiService.sendMessage(userMessage, myContext);
 
-  // Safely get the text from the first part
-  const botReply = resText.parts?.[0]?.text || "No response";
+// Use it directly since service already returns a string
+const botReply = resText || "No response";
 
-  this.messages.push({
-    text: `${botReply}`,
-    sender: "bot"
-  });
+this.messages.push({
+  text: botReply,
+  sender: "bot"
+});
+
 
   } catch (err) {
      console.log("error")
