@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GeminiService } from '../gemini.service';
 
 @Component({
@@ -7,8 +7,13 @@ import { GeminiService } from '../gemini.service';
   templateUrl: './portfolio.component.html',
   styleUrl: './portfolio.component.css'
 })
-export class PortfolioComponent {
+export class PortfolioComponent implements OnInit {
 menuOpen = false;
+email = '';
+
+ngOnInit(): void {
+  this.email = "shaw" + "nbu" + "los03" + "@gmail.com";
+}
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
