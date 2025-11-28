@@ -9,7 +9,7 @@ import { GeminiService } from '../gemini.service';
 })
 export class PortfolioComponent {
 menuOpen = false;
-email = "shawnbulos03@gmail.com"
+
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
